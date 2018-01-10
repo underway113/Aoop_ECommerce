@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -30,13 +31,7 @@ public class CartFrame extends javax.swing.JFrame {
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
             state = con.createStatement();
             res = state.executeQuery(query);
-            while(res.next()){
-                int id = res.getInt("CartID");
-                String namaBarang = res.getString("NamaBarang");
-                int jumlah = res.getInt("Jumlah");
-                int harga = res.getInt("Harga");
-                System.out.println(id + namaBarang + jumlah + harga);
-            }
+            tableCart.setModel(DbUtils.resultSetToTableModel(res));        
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -55,7 +50,7 @@ public class CartFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableCart = new javax.swing.JTable();
         btnCredit = new javax.swing.JButton();
         btnTransfer = new javax.swing.JButton();
         txtTotal = new javax.swing.JLabel();
@@ -67,7 +62,7 @@ public class CartFrame extends javax.swing.JFrame {
 
         jLabel1.setText("CART");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableCart.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -75,8 +70,8 @@ public class CartFrame extends javax.swing.JFrame {
                 "CartID", "Nama Barang", "Jumlah", "Harga"
             }
         ));
-        jTable1.setRowHeight(40);
-        jScrollPane1.setViewportView(jTable1);
+        tableCart.setRowHeight(40);
+        jScrollPane1.setViewportView(tableCart);
 
         btnCredit.setText("Pay With Credit Card");
 
@@ -199,7 +194,7 @@ public class CartFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tableCart;
     private javax.swing.JLabel txtTotal;
     // End of variables declaration//GEN-END:variables
 }

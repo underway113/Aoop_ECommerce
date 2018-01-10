@@ -5,6 +5,13 @@
  */
 package aoop_ecommerce1;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import net.proteanit.sql.DbUtils;
+
 /**
  *
  * @author J . Renael
@@ -16,6 +23,19 @@ public class TransactionHistoryFrame extends javax.swing.JFrame {
      */
     public TransactionHistoryFrame() {
         initComponents();
+        Connection con = null;
+        Statement state = null;
+        ResultSet res = null;
+        String query = "SELECT * FROM TransactionID";
+        try{
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+            state = con.createStatement();
+            res = state.executeQuery(query);
+            tableTransaction.setModel(DbUtils.resultSetToTableModel(res));        
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -30,7 +50,7 @@ public class TransactionHistoryFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableTransaction = new javax.swing.JTable();
         btnHome = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,7 +62,7 @@ public class TransactionHistoryFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("TRANSACTION HISTORY");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableTransaction.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -50,7 +70,7 @@ public class TransactionHistoryFrame extends javax.swing.JFrame {
                 "Transaction ID", "Customer Name", "Payment", "Total"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableTransaction);
 
         btnHome.setText("Home");
         btnHome.addActionListener(new java.awt.event.ActionListener() {
@@ -146,6 +166,6 @@ public class TransactionHistoryFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tableTransaction;
     // End of variables declaration//GEN-END:variables
 }
