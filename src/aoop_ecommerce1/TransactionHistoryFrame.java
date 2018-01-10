@@ -79,6 +79,7 @@ public class TransactionHistoryFrame extends javax.swing.JFrame {
         btnHome.setBackground(new java.awt.Color(0, 94, 203));
         btnHome.setText("Home");
         btnHome.setBorder(null);
+        btnHome.setFocusable(false);
         btnHome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHomeActionPerformed(evt);
