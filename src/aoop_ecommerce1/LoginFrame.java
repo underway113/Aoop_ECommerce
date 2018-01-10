@@ -30,7 +30,6 @@ public class LoginFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtUsername1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -38,10 +37,6 @@ public class LoginFrame extends javax.swing.JFrame {
         txtUsername = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         txtPassword = new javax.swing.JTextField();
-
-        txtUsername1.setBackground(new java.awt.Color(131, 185, 255));
-        txtUsername1.setForeground(new java.awt.Color(0, 0, 0));
-        txtUsername1.setText("Username");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(700, 650));
@@ -154,12 +149,13 @@ public class LoginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        if(txtUsername.getText()=="user"){
-            JOptionPane.showConfirmDialog(null, "Welcome to Tokiped, John", "Confirmation Message", JOptionPane.OK_OPTION);
-            new LoginFrame().setVisible(false);
+        if(txtUsername.getText().equals("Username") && txtPassword.getText().equals("Password")){
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true);
         }
         else{
-            JOptionPane.showMessageDialog(null, "Wrong Username or Password, please Try Again !", "Error Message", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(null, "Wrong Username or Password, please Try Again !" +txtUsername.getText(), "Error Message", JOptionPane.OK_OPTION);
+            
         }
         
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -207,6 +203,5 @@ public class LoginFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtUsername;
-    private javax.swing.JTextField txtUsername1;
     // End of variables declaration//GEN-END:variables
 }
