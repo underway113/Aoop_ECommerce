@@ -27,6 +27,7 @@ public class AOOP_ECommerce1 {
         try{
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
             PreparedStatement deleteInit = con.prepareStatement(query);
+            deleteInit.executeUpdate();
         }
         catch(SQLException e){
             e.printStackTrace();

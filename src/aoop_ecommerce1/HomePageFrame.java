@@ -5,6 +5,11 @@
  */
 package aoop_ecommerce1;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  *
  * @author J . Renael
@@ -170,6 +175,17 @@ public class HomePageFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        Connection con = null;
+        String query = "DELETE FROM CART";
+        try{
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+            PreparedStatement deleteInit = con.prepareStatement(query);
+            deleteInit.executeUpdate();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
         this.setVisible(false);
         new LoginFrame().setVisible(true);
     }//GEN-LAST:event_btnLogoutActionPerformed
