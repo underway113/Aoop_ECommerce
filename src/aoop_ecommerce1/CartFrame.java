@@ -5,6 +5,12 @@
  */
 package aoop_ecommerce1;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author J . Renael
@@ -154,7 +160,16 @@ public class CartFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CartFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        Connection con = null;
+        Statement state = null;
+        ResultSet res = null;
+        try{
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
