@@ -209,12 +209,12 @@ public class FnbFrame extends javax.swing.JFrame {
         try {
             int id = 0 ;
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(CartID) FROM Cart GROUP BY NamaBarang , Jumlah , Harga ";
+            String query = "SELECT MAX(CartID) FROM Cart";
             state = con.createStatement();
             res = state.executeQuery(query);
             if (res.next()) {
-                 id = res.getInt(1) ;
-                 id+=3;
+                 id = res.getInt(1) + 1 ;
+         
             }
             
             String namaBarang = "Kacang Almond" ;
@@ -240,12 +240,11 @@ public class FnbFrame extends javax.swing.JFrame {
                 try {
             int id = 0 ;
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(CartID) FROM Cart GROUP BY NamaBarang , Jumlah , Harga ";
+            String query = "SELECT MAX(CartID) FROM Cart";
             state = con.createStatement();
             res = state.executeQuery(query);
             if (res.next()) {
-                 id = res.getInt(1) ;
-                 id+=3;
+                 id = res.getInt(1) + 1 ;
             }
             String namaBarang = "Macaron" ;
             Integer q = (Integer)spinnerMacaron.getValue();
