@@ -14,7 +14,7 @@ package aoop_ecommerce1;
 public class AOOP_ECommerce1 {
 
     public static void main(String[] args) {
-        // test
+        new LoginFrame().setVisible(true);
     }
     
 }
