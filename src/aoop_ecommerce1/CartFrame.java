@@ -7,6 +7,7 @@ package aoop_ecommerce1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,17 +22,27 @@ public class CartFrame extends javax.swing.JFrame {
     /**
      * Creates new form CartFrame
      */
+    int total = 0 ;
+    Connection con = null;
+    Statement state = null;
+    ResultSet res = null;
+    ResultSet sum = null ;
+    
     public CartFrame() {
         initComponents();
-        Connection con = null;
-        Statement state = null;
-        ResultSet res = null;
+        
         String query = "SELECT * FROM Cart";
         try{
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
             state = con.createStatement();
             res = state.executeQuery(query);
-            tableCart.setModel(DbUtils.resultSetToTableModel(res));        
+            tableCart.setModel(DbUtils.resultSetToTableModel(res));  
+            sum = state.executeQuery("SELECT SUM(Harga) FROM Cart");
+            if (sum.next()) {
+                labelTotal.setText(String.valueOf(sum.getInt(1)));
+                total = sum.getInt(1);
+            }
+           
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -55,6 +66,7 @@ public class CartFrame extends javax.swing.JFrame {
         btnTransfer = new javax.swing.JButton();
         txtTotal = new javax.swing.JLabel();
         btnHome = new javax.swing.JButton();
+        labelTotal = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,8 +86,18 @@ public class CartFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tableCart);
 
         btnCredit.setText("Pay With Credit Card");
+        btnCredit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreditActionPerformed(evt);
+            }
+        });
 
         btnTransfer.setText("Pay Atm Transfer");
+        btnTransfer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTransferActionPerformed(evt);
+            }
+        });
 
         txtTotal.setText("TOTAL");
 
@@ -85,6 +107,8 @@ public class CartFrame extends javax.swing.JFrame {
                 btnHomeActionPerformed(evt);
             }
         });
+
+        labelTotal.setText("jLabel2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -103,6 +127,8 @@ public class CartFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addComponent(txtTotal)
+                .addGap(51, 51, 51)
+                .addComponent(labelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(103, 103, 103)
@@ -121,10 +147,12 @@ public class CartFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnCredit, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(btnTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(txtTotal))
-                    .addComponent(btnTransfer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(8, 8, 8)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtTotal)
+                            .addComponent(labelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -147,6 +175,60 @@ public class CartFrame extends javax.swing.JFrame {
         this.setVisible(false);
         new HomePageFrame().setVisible(true);
     }//GEN-LAST:event_btnHomeActionPerformed
+
+    private void btnTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferActionPerformed
+        try {
+            int id = 0 ;
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+            String query = "SELECT MAX(TranID) FROM TRANSACTIONID";
+            state = con.createStatement();
+            res = state.executeQuery(query);
+            if (res.next()) {
+                 id = res.getInt(1) + 1 ;
+            }
+            String customer = "John" ;
+            String payment = "Transfer" ;
+            PreparedStatement add = con.prepareStatement("insert Into TRANSACTIONID values (?,?,?,?)");
+            add.setInt(1, id);
+            add.setString(2, customer);
+            add.setString(3, payment);
+            add.setInt(4, total);
+            int row = add.executeUpdate();
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        this.setVisible(false);
+        new HomePageFrame().setVisible(true);
+    }//GEN-LAST:event_btnTransferActionPerformed
+
+    private void btnCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditActionPerformed
+        try {
+            int id = 0 ;
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+            String query = "SELECT MAX(TranID) FROM TRANSACTIONID";
+            state = con.createStatement();
+            res = state.executeQuery(query);
+            if (res.next()) {
+                 id = res.getInt(1) + 1 ;
+            }
+            String customer = "John" ;
+            String payment = "Credit" ;
+            PreparedStatement add = con.prepareStatement("insert Into TRANSACTIONID values (?,?,?,?)");
+            add.setInt(1, id);
+            add.setString(2, customer);
+            add.setString(3, payment);
+            add.setInt(4, total);
+            int row = add.executeUpdate();
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        this.setVisible(false);
+        new HomePageFrame().setVisible(true);
+    }//GEN-LAST:event_btnCreditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,6 +276,7 @@ public class CartFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTotal;
     private javax.swing.JTable tableCart;
     private javax.swing.JLabel txtTotal;
     // End of variables declaration//GEN-END:variables
