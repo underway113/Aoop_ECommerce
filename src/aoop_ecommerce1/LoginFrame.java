@@ -64,7 +64,6 @@ public class LoginFrame extends javax.swing.JFrame {
         jPanel4.setAlignmentY(0.0F);
 
         btnLogin.setBackground(new java.awt.Color(131, 185, 255));
-        btnLogin.setForeground(new java.awt.Color(0, 0, 0));
         btnLogin.setText("LOGIN");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
