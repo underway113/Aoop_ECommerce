@@ -112,14 +112,17 @@ public class LoginFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //USERNAME and Password
+    String username = "user";
+    String password = "pass";
+    
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        if(txtUsername.getText().equals("Username") && txtPassword.getText().equals("Password")){
+        if(txtUsername.getText().equals(username) && txtPassword.getText().equals(password)){
             this.setVisible(false);
             new HomePageFrame().setVisible(true);
         }
         else{
-            JOptionPane.showMessageDialog(null, "Wrong Username or Password, please Try Again !" +txtUsername.getText(), "Error Message", JOptionPane.OK_OPTION);
-
+            JOptionPane.showMessageDialog(null, "Wrong Username or Password, please Try Again !", "Error Message", JOptionPane.OK_OPTION);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

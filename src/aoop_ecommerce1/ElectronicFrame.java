@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -68,6 +69,7 @@ public class ElectronicFrame extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Quantity");
 
+        spinnerHandphone.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerHandphone.setBorder(null);
 
         btnCartHandphone.setBackground(new java.awt.Color(68, 138, 255));
@@ -132,6 +134,7 @@ public class ElectronicFrame extends javax.swing.JFrame {
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Quantity");
 
+        spinnerLaptop.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerLaptop.setBorder(null);
 
         btnCartLaptop.setBackground(new java.awt.Color(68, 138, 255));
@@ -229,63 +232,74 @@ public class ElectronicFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnCartHandphoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartHandphoneActionPerformed
-        try {
-            int id = 0 ;
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(CartID) FROM Cart";
-            state = con.createStatement();
-            res = state.executeQuery(query);
-            if (res.next()) {
-                id = res.getInt(1) + 1 ;
+        if((Integer)spinnerHandphone.getValue()==0){
+            JOptionPane.showMessageDialog(null, "Quantity Minimum Zero !", "Error Message", JOptionPane.OK_OPTION);
+        }
+        else{
+            try {
+                int id = 0 ;
+               con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+               String query = "SELECT MAX(CartID) FROM Cart";
+               state = con.createStatement();
+               res = state.executeQuery(query);
+               if (res.next()) {
+                   id = res.getInt(1) + 1 ;
+                }
+
+                String namaBarang = "Handphone" ;
+                Integer quantity = (Integer)spinnerHandphone.getValue();
+                int harga = quantity * 100000 ;
+                System.out.println(id);
+                PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
+                add.setInt(1, id);
+                add.setString(2, namaBarang);
+                add.setInt(3, quantity);
+                add.setInt(4, harga);
+                add.executeUpdate();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
             }
 
-            String namaBarang = "Handphone" ;
-            Integer quantity = (Integer)spinnerHandphone.getValue();
-            int harga = quantity * 100000 ;
-            System.out.println(id);
-            PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
-            add.setInt(1, id);
-            add.setString(2, namaBarang);
-            add.setInt(3, quantity);
-            add.setInt(4, harga);
-            add.executeUpdate();
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true);
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        this.setVisible(false);
-        new HomePageFrame().setVisible(true);
     }//GEN-LAST:event_btnCartHandphoneActionPerformed
 
     private void btnCartLaptopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartLaptopActionPerformed
-        try {
-            int id = 0 ;
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(CartID) FROM Cart";
-            state = con.createStatement();
-            res = state.executeQuery(query);
-            if (res.next()) {
-                id = res.getInt(1) + 1 ;
+             
+        if((Integer)spinnerLaptop.getValue()==0){
+            JOptionPane.showMessageDialog(null, "Quantity Minimum Zero !", "Error Message", JOptionPane.OK_OPTION);
+        }
+        else{
+            try {
+               int id = 0 ;
+               con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+               String query = "SELECT MAX(CartID) FROM Cart";
+               state = con.createStatement();
+               res = state.executeQuery(query);
+               if (res.next()) {
+                   id = res.getInt(1) + 1 ;
+               }
+               
+                String namaBarang = "Laptop" ;
+                Integer quantity = (Integer)spinnerLaptop.getValue();
+                int harga = quantity * 250000 ;
+                System.out.println(id);
+                PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
+                add.setInt(1, id);
+                add.setString(2, namaBarang);
+                add.setInt(3, quantity);
+                add.setInt(4, harga);
+                add.executeUpdate();
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
             }
 
-            String namaBarang = "Laptop" ;
-            Integer quantity = (Integer)spinnerLaptop.getValue();
-            int harga = quantity * 250000 ;
-            System.out.println(id);
-            PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
-            add.setInt(1, id);
-            add.setString(2, namaBarang);
-            add.setInt(3, quantity);
-            add.setInt(4, harga);
-            add.executeUpdate();
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true);
         }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        this.setVisible(false);
-        new HomePageFrame().setVisible(true);
     }//GEN-LAST:event_btnCartLaptopActionPerformed
 
     /**
@@ -324,37 +338,17 @@ public class ElectronicFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCartAlmond;
-    private javax.swing.JButton btnCartAlmond1;
-    private javax.swing.JButton btnCartAlmond2;
-    private javax.swing.JButton btnCartAlmond3;
     private javax.swing.JButton btnCartHandphone;
     private javax.swing.JButton btnCartLaptop;
     private javax.swing.JButton btnHome;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JSpinner spinnerAlmond;
-    private javax.swing.JSpinner spinnerAlmond1;
-    private javax.swing.JSpinner spinnerAlmond2;
-    private javax.swing.JSpinner spinnerAlmond3;
     private javax.swing.JSpinner spinnerHandphone;
     private javax.swing.JSpinner spinnerLaptop;
     // End of variables declaration//GEN-END:variables

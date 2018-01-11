@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -162,12 +163,13 @@ public class CartFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtTotal)
-                        .addComponent(labelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(labelTotal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -192,77 +194,87 @@ public class CartFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnTransferActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferActionPerformed
-        try {
-            int id = 0 ;
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(TranID) FROM TRANSACTIONID";
-            state = con.createStatement();
-            res = state.executeQuery(query);
-            if (res.next()) {
-                 id = res.getInt(1) + 1 ;
+        if(total==0){
+            JOptionPane.showMessageDialog(null, "Please Add Item to Cart first and Try Again", "Error Message", JOptionPane.OK_OPTION);
+        }
+        else{
+            try {
+                int id = 0 ;
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+                String query = "SELECT MAX(TranID) FROM TRANSACTIONID";
+                state = con.createStatement();
+                res = state.executeQuery(query);
+                if (res.next()) {
+                     id = res.getInt(1) + 1 ;
+                }
+                String customer = "John" ;
+                String payment = "Transfer" ;
+                PreparedStatement add = con.prepareStatement("insert Into TRANSACTIONID values (?,?,?,?)");
+                add.setInt(1, id);
+                add.setString(2, customer);
+                add.setString(3, payment);
+                add.setInt(4, total);
+                add.executeUpdate();
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
             }
-            String customer = "John" ;
-            String payment = "Transfer" ;
-            PreparedStatement add = con.prepareStatement("insert Into TRANSACTIONID values (?,?,?,?)");
-            add.setInt(1, id);
-            add.setString(2, customer);
-            add.setString(3, payment);
-            add.setInt(4, total);
-            int row = add.executeUpdate();
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
         
-        this.setVisible(false);
-        new HomePageFrame().setVisible(true);
-        Connection con = null;
-        String query = "DELETE FROM CART";
-        try{
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            PreparedStatement deleteInit = con.prepareStatement(query);
-            deleteInit.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true);
+            Connection con = null;
+            String query = "DELETE FROM CART";
+            try{
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+                PreparedStatement deleteInit = con.prepareStatement(query);
+                deleteInit.executeUpdate();
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnTransferActionPerformed
 
     private void btnCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreditActionPerformed
-        try {
-            int id = 0 ;
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(TranID) FROM TRANSACTIONID";
-            state = con.createStatement();
-            res = state.executeQuery(query);
-            if (res.next()) {
-                 id = res.getInt(1) + 1 ;
+        if(total==0){
+            JOptionPane.showMessageDialog(null, "Please Add Item to Cart first and Try Again", "Error Message", JOptionPane.OK_OPTION);
+        }
+        else{
+            try {
+                int id = 0 ;
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+                String query = "SELECT MAX(TranID) FROM TRANSACTIONID";
+                state = con.createStatement();
+                res = state.executeQuery(query);
+                if (res.next()) {
+                     id = res.getInt(1) + 1 ;
+                }
+                String customer = "John" ;
+                String payment = "Credit" ;
+                PreparedStatement add = con.prepareStatement("insert Into TRANSACTIONID values (?,?,?,?)");
+                add.setInt(1, id);
+                add.setString(2, customer);
+                add.setString(3, payment);
+                add.setInt(4, total);
+                add.executeUpdate();
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
             }
-            String customer = "John" ;
-            String payment = "Credit" ;
-            PreparedStatement add = con.prepareStatement("insert Into TRANSACTIONID values (?,?,?,?)");
-            add.setInt(1, id);
-            add.setString(2, customer);
-            add.setString(3, payment);
-            add.setInt(4, total);
-            int row = add.executeUpdate();
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
         
-        this.setVisible(false);
-        new HomePageFrame().setVisible(true);
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true);
         
-        Connection con = null;
-        String query = "DELETE FROM CART";
-        try{
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            PreparedStatement deleteInit = con.prepareStatement(query);
+            Connection con = null;
+            String query = "DELETE FROM CART";
+            try{
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+                PreparedStatement deleteInit = con.prepareStatement(query);
             deleteInit.executeUpdate();
-        }
-        catch(SQLException e){
-            e.printStackTrace();
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
         }
     }//GEN-LAST:event_btnCreditActionPerformed
 

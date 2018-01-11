@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -64,6 +65,7 @@ public class FnbFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Kacang Almond");
 
+        spinnerAlmond.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerAlmond.setBorder(null);
 
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
@@ -117,6 +119,7 @@ public class FnbFrame extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Macaron");
 
+        spinnerMacaron.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spinnerMacaron.setBorder(null);
 
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
@@ -228,64 +231,75 @@ public class FnbFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHomeActionPerformed
 
     private void btnCartAlmondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartAlmondActionPerformed
-        // TODO add your handling code here:
-        try {
-            int id = 0 ;
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(CartID) FROM Cart";
-            state = con.createStatement();
-            res = state.executeQuery(query);
-            if (res.next()) {
-                 id = res.getInt(1) + 1 ;
-            }
-            
-            String namaBarang = "Kacang Almond" ;
-            Integer quantity = (Integer)spinnerAlmond.getValue();
-            int harga = quantity * 3000 ;
-            System.out.println(id);
-            PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
-            add.setInt(1, id);
-            add.setString(2, namaBarang);
-            add.setInt(3, quantity);
-            add.setInt(4, harga);
-            int row = add.executeUpdate();
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
+       
+                
+        if((Integer)spinnerAlmond.getValue()==0){
+            JOptionPane.showMessageDialog(null, "Quantity Minimum Zero !", "Error Message", JOptionPane.OK_OPTION);
         }
+        else{
+            try {
+                int id = 0 ;
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+                String query = "SELECT MAX(CartID) FROM Cart";
+                state = con.createStatement();
+                res = state.executeQuery(query);
+                if (res.next()) {
+                     id = res.getInt(1) + 1 ;
+                }
+            
+                String namaBarang = "Kacang Almond" ;
+                Integer quantity = (Integer)spinnerAlmond.getValue();
+                int harga = quantity * 3000 ;
+                System.out.println(id);
+                PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
+                add.setInt(1, id);
+                add.setString(2, namaBarang);
+                add.setInt(3, quantity);
+                add.setInt(4, harga);
+                add.executeUpdate();
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
         
-        this.setVisible(false);
-        new HomePageFrame().setVisible(true);
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true);
+        }
     }//GEN-LAST:event_btnCartAlmondActionPerformed
 
     private void btnCartMacaronActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCartMacaronActionPerformed
-                try {
-            int id = 0 ;
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
-            String query = "SELECT MAX(CartID) FROM Cart";
-            state = con.createStatement();
-            res = state.executeQuery(query);
-            if (res.next()) {
-                 id = res.getInt(1) + 1 ;
-            }
-            String namaBarang = "Macaron" ;
-            Integer q = (Integer)spinnerMacaron.getValue();
-            int harga = q * 5000 ;
-            System.out.println(id);
-            PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
-            add.setInt(1, id);
-            add.setString(2, namaBarang);
-            add.setInt(3, q);
-            add.setInt(4, harga);
-            int row = add.executeUpdate();
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
+        if((Integer)spinnerMacaron.getValue()==0){
+            JOptionPane.showMessageDialog(null, "Quantity Minimum Zero !", "Error Message", JOptionPane.OK_OPTION);
         }
+        else{        
+            try {
+                int id = 0 ;
+                con = DriverManager.getConnection("jdbc:derby://localhost:1527/TokipedDB");
+                String query = "SELECT MAX(CartID) FROM Cart";
+                state = con.createStatement();
+                res = state.executeQuery(query);
+                if (res.next()) {
+                     id = res.getInt(1) + 1 ;
+                }
+                String namaBarang = "Macaron" ;
+                Integer q = (Integer)spinnerMacaron.getValue();
+                int harga = q * 5000 ;
+                System.out.println(id);
+                PreparedStatement add = con.prepareStatement("insert Into Cart values (?,?,?,?)");
+                add.setInt(1, id);
+                add.setString(2, namaBarang);
+                add.setInt(3, q);
+                add.setInt(4, harga);
+                add.executeUpdate();
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
         
-        this.setVisible(false);
-        new HomePageFrame().setVisible(true); 
+            this.setVisible(false);
+            new HomePageFrame().setVisible(true); 
 
+        }
     }//GEN-LAST:event_btnCartMacaronActionPerformed
 
     /**
